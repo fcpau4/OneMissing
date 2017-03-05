@@ -9,22 +9,64 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 import java.io.IOException;
 
 public class NewEventActivity extends Activity {
+
     private final int PICK_IMAGE = 200;
-    private int REQUEST_TAKE_PHOTO = 1;
+    private final int REQUEST_TAKE_PHOTO = 100;
+
+    private DatabaseReference ref;
+
     private ImageView imgEvent;
+    private EditText eventName;
+    private EditText sportName;
+    private String imagePath;
+    private double LAT;
+    private double LON;
+
     private File f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-
         imgEvent = (ImageView) findViewById(R.id.imgEvent);
+        eventName = (EditText) findViewById(R.id.txtEvent);
+        sportName = (EditText) findViewById(R.id.txtSport);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ref = database.getReference("events");
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment) getFragmentManager().
+                findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+
+            @Override
+            public void onPlaceSelected(Place place) {
+                    LAT = place.getLatLng().latitude;
+                    LON = place.getLatLng().longitude;
+            }
+
+            @Override
+            public void onError(Status status) {
+
+            }
+        });
 
         imgEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +83,8 @@ public class NewEventActivity extends Activity {
                 btDialogCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.dismiss();
                         dispatchTakePictureIntent();
+                        dialog.dismiss();
                     }
                 });
 
@@ -91,14 +133,30 @@ public class NewEventActivity extends Activity {
             case PICK_IMAGE:
                 if(resultCode==RESULT_OK && data!=null){
                     Uri selectedImageUri = data.getData();
+                    imagePath = data.getDataString();
                     imgEvent.setImageURI(selectedImageUri);
                 }
+                break;
+
+            case REQUEST_TAKE_PHOTO:
+                if(resultCode == RESULT_OK && data!=null){
+                    Uri selectedImageUri = data.getData();
+                    imagePath = data.getDataString();
+                    imgEvent.setImageURI(selectedImageUri);
+                }
+                break;
         }
     }
 
+    public void saveEvent(View view) {
 
-    public void onClickLocation(View view) {
+        String name= eventName.getText().toString();
+        String sport = sportName.getText().toString();
+        Event event = new Event(imagePath, name, sport, LAT, LON);
+        ref.push().setValue(event);
 
-
+        Intent i = new Intent(NewEventActivity.this, MapMainActivity.class);
+        finish(); //Kill the activity from which you will go to next activity
+        startActivity(i);
     }
 }

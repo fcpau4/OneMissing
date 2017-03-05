@@ -64,20 +64,42 @@
         android:layout_alignStart="@+id/txtEvent"
         android:layout_marginTop="27dp" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linear_place"
-        android:onClick="onClickLocation">
-
-        <TextView
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtLocation"/>
-    </LinearLayout>
+            android:layout_below="@+id/txtSport"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="55dp"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
+
+    <TextView
+        android:text="Place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtSport"
+        android:layout_alignLeft="@+id/txtSport"
+        android:layout_alignStart="@+id/txtSport"
+        android:layout_marginTop="21dp"
+        android:id="@+id/textView" />
+
+    <Button
+        android:text="Create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:id="@+id/btCreateEvent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:background="#BF360C"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:onClick="saveEvent"
+        />
 
 </RelativeLayout>
