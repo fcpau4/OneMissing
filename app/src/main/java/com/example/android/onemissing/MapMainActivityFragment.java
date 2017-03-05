@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -21,6 +21,7 @@ public class MapMainActivityFragment extends Fragment {
     private double latitudeBCN = 41.390205;
     private double longitudeBCN = 2.154007;
     private MapView map;
+    private DatabaseReference ref;
 
 
     public MapMainActivityFragment() {
@@ -34,8 +35,12 @@ public class MapMainActivityFragment extends Fragment {
 
         map = (MapView) view.findViewById(R.id.map);
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        ref = database.getReference("events");
+
         //First, set map view options.
         setMap();
+
 
 
         return view;

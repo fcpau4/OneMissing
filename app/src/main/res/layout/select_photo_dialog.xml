@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Button
+        android:text="Select From Gallery"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/btSelectPhotoFromGallery"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:text="Camera"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/btTakePhoto"
+        android:layout_below="@+id/btSelectPhotoFromGallery"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
