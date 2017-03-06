@@ -53,8 +53,8 @@ public class MapMainActivityFragment extends Fragment {
                 Event event = dataSnapshot.getValue(Event.class);
                 Marker marker = new Marker(map);
                 marker.setPosition(new GeoPoint(event.getLat(), event.getLon()));
-                int offsetX = (int)(ANCHOR_CENTER*10) - (int)(ANCHOR_CENTER*10);
-                int offsetY = (int)(ANCHOR_TOP*10) - (int)(ANCHOR_CENTER*10);
+                int offsetX = (int)(ANCHOR_CENTER*1) - (int)(ANCHOR_CENTER*1);
+                int offsetY = (int)(ANCHOR_TOP*1) - (int)(ANCHOR_CENTER*1);
 
                 marker.setTitle(event.getEventName());
                 marker.setSubDescription(event.getSport());

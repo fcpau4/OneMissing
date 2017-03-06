@@ -44,28 +44,17 @@ public class InfoWindow extends MarkerInfoWindow {
         TextView txtName = (TextView) mView.findViewById(R.id.txtBoxEventName);
         txtName.setText(mMarkerRef.getTitle());
 
-        ImageView imageView = (ImageView) mView.findViewById(R.id.eventBox);
-        //File f = new File(path);
-        Bitmap bmp = null;
-        try {
-            bmp = getBitmapFromUri(Uri.fromFile(new File(path)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imageView.setImageBitmap(bmp);
+        TextView txtSport = (TextView) mView.findViewById(R.id.txtBoxSportName);
+        txtSport.setText(mMarkerRef.getSubDescription());
 
+        ImageView imageView = (ImageView) mView.findViewById(R.id.eventBox);
+        File f = new File(path);
+        if(f.exists()){
+            Glide.with(mContext)
+                    .load(Uri.fromFile(f))
+                    .centerCrop()
+                    .into(imageView);
+        }
         imageView.setVisibility(View.VISIBLE);
     }
-
-
-
-    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
-        ParcelFileDescriptor parcelFileDescriptor = mContext.getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
-    }
-
-
 }

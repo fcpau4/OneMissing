@@ -136,35 +136,40 @@ public class NewEventActivity extends Activity {
             case PICK_IMAGE:
                 if(resultCode==RESULT_OK && data!=null){
                     Uri selectedImageUri = data.getData();
-                    //imagePath = data.getDataString();
-                    //imagePath = selectedImageUri.getPath();
-                    imagePath = getPath(selectedImageUri);
+                    imagePath = new File(getRealPathFromURI(selectedImageUri)).getAbsolutePath();
                     imgEvent.setImageURI(selectedImageUri);
                 }
                 break;
 
             case REQUEST_TAKE_PHOTO:
-                if(resultCode == RESULT_OK && data!=null){
-                    Uri selectedImageUri = data.getData();
-                    imagePath = getPath(selectedImageUri);
-                    imgEvent.setImageURI(selectedImageUri);
+                System.out.println(resultCode);
+                if(resultCode == RESULT_OK){
+                    imagePath = f.getAbsolutePath();
+                    imgEvent.setImageURI(Uri.fromFile(f));
                 }
                 break;
         }
     }
 
 
-    public String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
 
     public void saveEvent(View view) {
 
+        System.out.println("ImagePath ------> "+imagePath);
         String name= eventName.getText().toString();
         String sport = sportName.getText().toString();
         Event event = new Event(imagePath, name, sport, LAT, LON);
