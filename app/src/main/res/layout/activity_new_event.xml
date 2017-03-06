@@ -99,7 +99,6 @@
         android:background="#BF360C"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:onClick="saveEvent"
-        />
+        android:onClick="saveEvent" />
 
 </RelativeLayout>

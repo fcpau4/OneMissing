@@ -5,13 +5,22 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+
+import static org.osmdroid.views.overlay.Marker.ANCHOR_CENTER;
+import static org.osmdroid.views.overlay.Marker.ANCHOR_TOP;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -20,7 +29,6 @@ public class MapMainActivityFragment extends Fragment {
 
     private double latitudeBCN = 41.390205;
     private double longitudeBCN = 2.154007;
-    private MapView map;
     private DatabaseReference ref;
 
 
@@ -33,15 +41,55 @@ public class MapMainActivityFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_map_main, container, false);
 
-        map = (MapView) view.findViewById(R.id.map);
+        final MapView map = (MapView) view.findViewById(R.id.map);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("events");
+        final RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(getContext());
 
-        //First, set map view options.
-        setMap();
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                Event event = dataSnapshot.getValue(Event.class);
+                Marker marker = new Marker(map);
+                marker.setPosition(new GeoPoint(event.getLat(), event.getLon()));
+                int offsetX = (int)(ANCHOR_CENTER*10) - (int)(ANCHOR_CENTER*10);
+                int offsetY = (int)(ANCHOR_TOP*10) - (int)(ANCHOR_CENTER*10);
 
+                marker.setTitle(event.getEventName());
+                marker.setSubDescription(event.getSport());
+                marker.setInfoWindow(new InfoWindow(getContext(), map, event.getImgPath()));
+                marker.getInfoWindow().open(marker, marker.getPosition(), offsetX, offsetY);
+                poiMarkers.add(marker);
+                poiMarkers.invalidate();
+                //map.invalidate();
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                // ...
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // ...
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+                // ...
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        setMap(map);
+        map.getOverlays().add(poiMarkers);
+        map.invalidate();
+        ref.addChildEventListener(childEventListener);
 
         return view;
     }
@@ -50,13 +98,13 @@ public class MapMainActivityFragment extends Fragment {
     /**
      * This method configures the map visualization and gets a Controller to set a start point location.
      */
-    public void setMap(){
+    public void setMap(MapView map){
         map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true);
+        map.setBuiltInZoomControls(false);
         map.setMultiTouchControls(true);
 
         IMapController mapController = map.getController();
-        mapController.setZoom(9);
+        mapController.setZoom(12);
         GeoPoint startPoint = new GeoPoint(latitudeBCN, longitudeBCN);
         mapController.setCenter(startPoint);
     }

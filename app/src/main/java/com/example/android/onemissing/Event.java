@@ -8,20 +8,23 @@ import com.google.android.gms.location.places.Place;
 
 public class Event {
 
-    private String imgPath;
-    private String eventName;
-    private String sport;
+    public String imgPath;
+    public String eventName;
+    public String sport;
 
-    private double LAT;
-    private double LON;
+    public double lat;
+    public double lon;
 
+
+    public Event() {
+    }
 
     public Event(String imgPath, String eventName, String sport, double lat, double lon){
         this.imgPath = imgPath;
         this.eventName = eventName;
         this.sport = sport;
-        LAT = lat;
-        LON = lon;
+        this.lat = lat;
+        this.lon = lon;
 
     }
 
@@ -50,20 +53,20 @@ public class Event {
         this.sport = sport;
     }
 
-    public double getLAT() {
-        return LAT;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLAT(double LAT) {
-        this.LAT = LAT;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public double getLON() {
-        return LON;
+    public double getLon() {
+        return lon;
     }
 
-    public void setLON(double LON) {
-        this.LON = LON;
+    public void setLon(double lat) {
+        this.lon = lat;
     }
 
 }

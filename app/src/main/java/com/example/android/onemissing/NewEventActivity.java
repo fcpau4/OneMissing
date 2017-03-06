@@ -3,9 +3,12 @@ package com.example.android.onemissing;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class NewEventActivity extends Activity {
@@ -117,8 +121,7 @@ public class NewEventActivity extends Activity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 f = photoFile;
             }
@@ -133,7 +136,9 @@ public class NewEventActivity extends Activity {
             case PICK_IMAGE:
                 if(resultCode==RESULT_OK && data!=null){
                     Uri selectedImageUri = data.getData();
-                    imagePath = data.getDataString();
+                    //imagePath = data.getDataString();
+                    //imagePath = selectedImageUri.getPath();
+                    imagePath = getPath(selectedImageUri);
                     imgEvent.setImageURI(selectedImageUri);
                 }
                 break;
@@ -141,12 +146,22 @@ public class NewEventActivity extends Activity {
             case REQUEST_TAKE_PHOTO:
                 if(resultCode == RESULT_OK && data!=null){
                     Uri selectedImageUri = data.getData();
-                    imagePath = data.getDataString();
+                    imagePath = getPath(selectedImageUri);
                     imgEvent.setImageURI(selectedImageUri);
                 }
                 break;
         }
     }
+
+
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
 
     public void saveEvent(View view) {
 
