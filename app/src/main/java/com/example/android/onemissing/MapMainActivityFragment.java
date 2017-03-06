@@ -33,6 +33,7 @@ public class MapMainActivityFragment extends Fragment {
 
 
     public MapMainActivityFragment() {
+
     }
 
     @Override

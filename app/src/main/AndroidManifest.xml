@@ -20,7 +20,7 @@
             android:value="AIzaSyDbFOkgK-ufJSGZvyO6aXJsaT50hljIrpo"/>
 
         <activity
-            android:name=".MapMainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

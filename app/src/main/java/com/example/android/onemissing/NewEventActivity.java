@@ -6,26 +6,21 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class NewEventActivity extends Activity {
@@ -175,7 +170,7 @@ public class NewEventActivity extends Activity {
         Event event = new Event(imagePath, name, sport, LAT, LON);
         ref.push().setValue(event);
 
-        Intent i = new Intent(NewEventActivity.this, MapMainActivity.class);
+        Intent i = new Intent(NewEventActivity.this, MainActivity.class);
         finish(); //Kill the activity from which you will go to next activity
         startActivity(i);
     }
