@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "973661925379",
+    "firebase_url": "https://onemissing-c603e.firebaseio.com",
+    "project_id": "onemissing-c603e",
+    "storage_bucket": "onemissing-c603e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973661925379:android:d830b6ca092040d9",
+        "android_client_info": {
+          "package_name": "com.example.android.onemissing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973661925379-47vohhqj1jf9q909nrcrcrteos2v3m89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.onemissing",
+            "certificate_hash": "1d085c97de8bc31a79e313335c1430810a57632b"
+          }
+        },
+        {
+          "client_id": "973661925379-jg6tnbbq0pj2cg8pq8btcq0d24h8dm9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4asd5f5D4_P5cPjoK0v2kelFVXIWSqsU"
+        },
+        {
+          "current_key": "AIzaSyAZXaufm8Hwt8NeFofEcxE7VIcuxDTs7og"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973661925379-jg6tnbbq0pj2cg8pq8btcq0d24h8dm9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

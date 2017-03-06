@@ -3,6 +3,7 @@ package com.example.android.onemissing;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,13 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -117,8 +116,7 @@ public class NewEventActivity extends Activity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(photoFile));
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 f = photoFile;
             }
@@ -133,29 +131,46 @@ public class NewEventActivity extends Activity {
             case PICK_IMAGE:
                 if(resultCode==RESULT_OK && data!=null){
                     Uri selectedImageUri = data.getData();
-                    imagePath = data.getDataString();
+                    imagePath = new File(getRealPathFromURI(selectedImageUri)).getAbsolutePath();
                     imgEvent.setImageURI(selectedImageUri);
                 }
                 break;
 
             case REQUEST_TAKE_PHOTO:
-                if(resultCode == RESULT_OK && data!=null){
-                    Uri selectedImageUri = data.getData();
-                    imagePath = data.getDataString();
-                    imgEvent.setImageURI(selectedImageUri);
+                System.out.println(resultCode);
+                if(resultCode == RESULT_OK){
+                    imagePath = f.getAbsolutePath();
+                    imgEvent.setImageURI(Uri.fromFile(f));
                 }
                 break;
         }
     }
 
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+
     public void saveEvent(View view) {
 
+        System.out.println("ImagePath ------> "+imagePath);
         String name= eventName.getText().toString();
         String sport = sportName.getText().toString();
         Event event = new Event(imagePath, name, sport, LAT, LON);
         ref.push().setValue(event);
 
-        Intent i = new Intent(NewEventActivity.this, MapMainActivity.class);
+        Intent i = new Intent(NewEventActivity.this, MainActivity.class);
         finish(); //Kill the activity from which you will go to next activity
         startActivity(i);
     }

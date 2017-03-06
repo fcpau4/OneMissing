@@ -1,30 +1,38 @@
 package com.example.android.onemissing;
 
-import android.content.Context;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import java.util.zip.Inflater;
+import com.example.android.onemissing.adapters.TabsPagerAdapter;
 
 
-public class MapMainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ImageButton btEvent;
+    private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private ActionBar actionBar;
+    // Tab titles
+    private String[] tabs = { "Map", "Events"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_main);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+
+        // Initilization
+        viewPager = (ViewPager) findViewById(R.id.vpPager);
+
 
         btEvent = (ImageButton) findViewById(R.id.btEvent);
         btEvent.setOnClickListener(new View.OnClickListener() {
@@ -34,7 +42,6 @@ public class MapMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
 
