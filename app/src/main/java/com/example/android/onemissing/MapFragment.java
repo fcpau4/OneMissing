@@ -25,14 +25,14 @@ import static org.osmdroid.views.overlay.Marker.ANCHOR_TOP;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MapMainActivityFragment extends Fragment {
+public class MapFragment extends Fragment {
 
     private double latitudeBCN = 41.390205;
     private double longitudeBCN = 2.154007;
     private DatabaseReference ref;
 
 
-    public MapMainActivityFragment() {
+    public MapFragment() {
 
     }
 
