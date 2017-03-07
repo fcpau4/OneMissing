@@ -1,4 +1,4 @@
-package com.example.android.onemissing;
+package com.example.android.onemissing.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.onemissing.Event;
+import com.example.android.onemissing.InfoWindow;
+import com.example.android.onemissing.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,10 +34,7 @@ public class MapFragment extends Fragment {
     private double longitudeBCN = 2.154007;
     private DatabaseReference ref;
 
-
-    public MapFragment() {
-
-    }
+    public MapFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,7 +63,6 @@ public class MapFragment extends Fragment {
                 marker.getInfoWindow().open(marker, marker.getPosition(), offsetX, offsetY);
                 poiMarkers.add(marker);
                 poiMarkers.invalidate();
-                //map.invalidate();
             }
 
             @Override
