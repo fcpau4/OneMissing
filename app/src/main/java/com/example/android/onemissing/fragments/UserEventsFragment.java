@@ -3,11 +3,13 @@ package com.example.android.onemissing.fragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.onemissing.Event;
@@ -35,7 +37,7 @@ public class UserEventsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_user_events, container, false);
 
-        GridView gvEvents = (GridView) view.findViewById(R.id.gallery);
+        GridView gvEvents = (GridView) view.findViewById(R.id.gallery_events);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         ref = database.getReference("events");
@@ -43,11 +45,21 @@ public class UserEventsFragment extends Fragment {
         firebaseListAdapter = new FirebaseListAdapter<Event>(getActivity(), Event.class, R.layout.gv_event_square, ref) {
             @Override
             protected void populateView(View v, Event event, int position) {
+
                 ImageView imgEvent = (ImageView) v.findViewById(R.id.photo_event);
-                Glide.with(getContext())
-                        .load(Uri.fromFile(new File(event.getImgPath())))
-                        .centerCrop()
-                        .into(imgEvent);
+                TextView txtTitle = (TextView) v.findViewById(R.id.txtTitle);
+
+                File file = new File(event.getImgPath());
+                Log.w("FILE ----->", event.getImgPath());
+
+                if(file.exists()) {
+                    Glide.with(getContext())
+                            .load(Uri.fromFile(file))
+                            .centerCrop()
+                            .into(imgEvent);
+                }
+
+                txtTitle.setText(event.getEventName());
             }
         };
 
